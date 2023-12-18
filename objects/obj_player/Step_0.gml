@@ -1,88 +1,81 @@
 /// @description Insert description here
 // You can write your code in this editor
 
-var left = keyboard_check(ord("A")) || keyboard_check(vk_left);
-var right = keyboard_check(ord("D")) || keyboard_check(vk_right);
-var jump = keyboard_check(vk_space);
-var dirInput = right-left
 
-
-//sprite mirroring
-if (abs(dirInput) > 0) image_xscale = dirInput;	
-
-//sideways motion
-if (grounded)
+if (input.coin && nCoins > 0 && coinCurrentCD <= 0)
 {
-	if (dirInput = 0)
+	var coinDir = point_direction(x,y,mouse_x,mouse_y);
+	var coinSpawnDist = 50;
+	with (instance_create_layer(x+lengthdir_x(coinSpawnDist,coinDir),y+lengthdir_y(coinSpawnDist,coinDir),layer,obj_coin))
 	{
-		//phy_speed_x = lerp(phy_speed_x,0,1);
-		physics_apply_force(x,y,-1*groundFrictionForce*phy_speed_x,y);
+		phy_speed_x = lengthdir_x(coinSpeed,coinDir);
+		phy_speed_y = lengthdir_y(coinSpeed,coinDir);
 	}
-	else 
-	{
-		if (phy_speed_x*dirInput < walkSpeed)
-		{
-			if (dirInput == 1) // going right
-			{
-				phy_speed_x = clamp(phy_speed_x + dirInput*walkSpeed,-99999,walkSpeed);
-			}
-			else if (dirInput == -1)
-			{
-				phy_speed_x = clamp(phy_speed_x + dirInput*walkSpeed,-walkSpeed,99999);
-			}
-		}
-	}
+	coinCurrentCD = coinCD;
+	nCoins--;
 }
-else
-{
-	physics_apply_force(x,y,dirInput*airForce,0);
-}
+coinCurrentCD = clamp(coinCurrentCD - 1,0,60);
+//show_debug_message("coinCD: "+string(coinCurrentCD));
+	
 
-
-if (jump && grounded)
-{
-	phy_speed_y =-jumpSpeed;
-}
-
-phy_rotation = 0;
 
 
 //set new object
-var mouseOverObj = collision_circle(mouse_x,mouse_y,10,obj_metal,false,true);
+var mouseOverObj = collision_point(mouse_x,mouse_y,obj_metal,true,true);
 if (mouseOverObj != noone)
 {
-	//clear selected tags
-	//for (var i = 0; i < instance_number(obj_metal); i++;)
-	//{
-	//	var temp = instance_find(obj_metal,i);
-	//	temp.isSelected = false;
-	//}
-	if (currentMetalObject != noone) currentMetalObject.isSelected = false;
+	if (currentMetalObject != noone && instance_exists(currentMetalObject))
+	{
+		currentMetalObject.isSelected = false;
+	}
 	mouseOverObj.isSelected = true;
 	currentMetalObject = mouseOverObj;
 }
 
 //apply push/pull
-if (currentMetalObject != noone)
+if (currentMetalObject != noone && instance_exists(currentMetalObject))
 {
-	var distCoeff = 0.02;
-	var distX = currentMetalObject.x-x;
-	var distY = currentMetalObject.y-y;
-	var dist = sqrt(sqr(distX) + sqr(distY));
-	var forceX = (distX * pushForce) / (dist);
-	var forceY = (distY * pushForce) / (dist);
-	forceX /= ((dist)*distCoeff);
-	forceY /= ((dist)*distCoeff);
+	var distCoeff = 0.01;
+	var posDiff = new Vector2(currentMetalObject.x-x,currentMetalObject.y-y);
+	var dist = posDiff.GetLen();
+	posDiff.Normalize();
+	var force = new Vector2(posDiff.x*pushForce,posDiff.y*pushForce);
+	force.Multiply(1/(distCoeff*dist));
+	var scaleDown = maxPushForce /force.GetLen();
+	if (scaleDown < 1)
+	{
+		force.Multiply(scaleDown);
+	}
+	
+	
 	if (mouse_check_button(mb_left))
 	{
-		physics_apply_force(x,y,-forceX,-forceY);
-		with currentMetalObject physics_apply_force(x,y,forceX,forceY);
+		//physics_apply_force(x,y,-forceX,-forceY);
+		alloForce.x = -force.x;
+		alloForce.y = -force.y;
+		with currentMetalObject physics_apply_force(x,y,force.x,force.y);
 	}
 	else if (mouse_check_button(mb_right))
 	{
-		physics_apply_force(x,y,forceX,forceY);
-		with currentMetalObject physics_apply_force(x,y,-forceX,-forceY);
+		if (currentMetalObject.object_index == obj_coin	)
+		{
+			currentMetalObject.isSticking = false;
+			currentMetalObject.isFriendly = true;
+		}
+		else {
+			alloForce.x = force.x;
+			alloForce.y = force.y;
+		}
+		with currentMetalObject physics_apply_force(x,y,-force.x,-force.y);
 	}
+	else
+	{
+		alloForce.Reset();
+	}
+}
+else 
+{
+	alloForce.Reset()
 }
 
 
