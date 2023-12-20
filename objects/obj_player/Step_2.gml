@@ -50,11 +50,12 @@ resultForce.Add(airStrafeForce);
 physics_apply_force(x,y,resultForce.x,resultForce.y);
 
 
-if (input.jump && grounded)
+//jumping
+if (input.jump && grounded && jumpCount == 0)
 {
 	//phy_speed_y =-jumpSpeed;
 	jumpCount++;
-	show_debug_message("Jump #"+string(jumpCount));
+	//show_debug_message("Jump #"+string(jumpCount));
 	physics_apply_impulse(x,y,0,-jumpImpulse);
 }
 

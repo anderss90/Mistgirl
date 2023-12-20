@@ -3,9 +3,12 @@
 
 event_inherited();
 
-hp = 2;
-coinCD = 60;
-coinspeed = 10;
+sprite_index = isFriendly ? spr_coin: spr_coin_unfriendly;
+
+
+
+
+
 
 
 

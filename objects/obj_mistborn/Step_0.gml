@@ -1,11 +1,13 @@
 /// @description Insert description here
 // You can write your code in this editor
 
-event_inherited();
+coinCurrentCD = clamp(coinCurrentCD - 1,0,60);
 
-hp = 2;
-coinCD = 60;
-coinspeed = 10;
+
+
+
+
+
 
 
 

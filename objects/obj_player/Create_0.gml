@@ -1,6 +1,7 @@
 /// @description Insert description here
 // You can write your code in this editor
 
+event_inherited();
 
 //input
 input = {
@@ -12,16 +13,16 @@ input = {
 };
 
 //movement and physics
-walkSpeed = 2.5;
-jumpSpeed = 6;
+walkSpeed = 3;
 maxAirStrafeSpeed = walkSpeed
 grounded = false;
 groundFrictionForce = 900;
 airForce = 1000;
-jumpImpulse = 300;
+jumpImpulse = 400;
+jumpCount = 0;
 frictionForce = new Vector2(0,0);
 resultForce = new Vector2(0,0); 
-jumpCount = 0;
+
 
 //push and pull
 currentMetalObject = noone;
@@ -30,10 +31,6 @@ pushForce = 2000;
 maxPushForce = 10000000;
 alloForce = new Vector2(); 
 
-//coins
-nCoins = 15;
-coinCD = 10;
-coinCurrentCD = 0;
 
 // lifecycle
 hp = 10;

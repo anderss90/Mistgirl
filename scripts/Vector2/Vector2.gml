@@ -37,5 +37,9 @@ function Vector2(_x = 0, _y = 0) constructor
 	{
 		x = 0;
 		y = 0;
+	},
+	static setZero = function()
+	{
+		Reset();
 	}
 }

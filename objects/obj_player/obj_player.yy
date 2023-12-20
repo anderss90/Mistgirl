@@ -17,7 +17,10 @@
     "name": "Objects",
     "path": "folders/Objects.yy",
   },
-  "parentObjectId": null,
+  "parentObjectId": {
+    "name": "obj_mistborn",
+    "path": "objects/obj_mistborn/obj_mistborn.yy",
+  },
   "persistent": false,
   "physicsAngularDamping": 100.0,
   "physicsDensity": 1.0,

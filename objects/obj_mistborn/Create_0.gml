@@ -1,11 +1,18 @@
 /// @description Insert description here
 // You can write your code in this editor
-
-event_inherited();
-
+//coins
+nCoins = 15;
+coinCD = 10;
+coinCurrentCD = 0;
+coinSpeed = 30;
 hp = 2;
-coinCD = 60;
-coinspeed = 10;
+
+
+
+
+
+
+
 
 
 
