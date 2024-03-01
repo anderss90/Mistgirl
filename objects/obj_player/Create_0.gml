@@ -22,13 +22,14 @@ jumpImpulse = 400;
 jumpCount = 0;
 frictionForce = new Vector2(0,0);
 resultForce = new Vector2(0,0); 
-
+currentJumpCD = 0;
+jumpCD = 30;
 
 //push and pull
 currentMetalObject = noone;
 drawMetalIndicator = true;
 pushForce = 2000;
-maxPushForce = 10000000;
+maxPushForce = 1500;
 alloForce = new Vector2(); 
 
 

@@ -12,20 +12,24 @@ if (!isFriendly && spd.GetLen() < 1)
 
 if isPulled
 {
-	var toPLayer = new Vector2(obj_player.x-x,obj_player.y-y);
-	toPLayer.Normalize();
-	
-	spd.x = toPLayer.x * coinSpeed;
-	spd.y = toPLayer.y * coinSpeed;
-	if collision_line(x,y,obj_player.x,obj_player.y,obj_collide,false,false)
+	if collision_line(x,y,obj_player.x,obj_player.y,obj_collide,false,true)
 	{
 		isPulled = false
 	}
+	else
+	{
+		
+		var toPLayer = new Vector2(obj_player.x-x,obj_player.y-y);
+		toPLayer.Normalize();
+	
+		spd.x = toPLayer.x * coinSpeed;
+		spd.y = toPLayer.y * coinSpeed;
+	}
+	
 }
 
 
-//move
-move_and_collide(spd.x,spd.y,obj_collide,4,0,0,16,16);
+
 //collide with walls and stuff
 var bounceLoss = 0.4;
 function test()
@@ -34,10 +38,10 @@ function test()
 }
 
 
-if collision_circle(x+spd.x,y+spd.y,sprite_width/2,obj_collide,true,true)
+if collision_circle(x,y,sprite_width/2,obj_collide,true,true)
 {
 	//either collision
-	show_debug_message("Coin speed"+string(spd.GetLen()));
+	show_debug_message("Coin speed "+string(spd.GetLen()));
 	if spd.GetLen() > stickThreshold
 	{
 		spd.setZero();
@@ -68,6 +72,11 @@ if mistBornHit != noone
 	}
 	instance_destroy();
 }
+
+//move
+//move_and_collide(spd.x,spd.y,obj_collide,4,0,0,16,16);
+x += spd.x;
+y += spd.y;
 
 
 

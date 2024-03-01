@@ -38,7 +38,7 @@ else if (!grounded)
 		airStrafeForce.x = input.dirX*airForce;
 	}
 	frictionForce.x = 0;
-	jumpCount = 0;
+	//jumpCD = 0;
 }
 
 resultForce.Add(alloForce);
@@ -51,13 +51,13 @@ physics_apply_force(x,y,resultForce.x,resultForce.y);
 
 
 //jumping
-if (input.jump && grounded && jumpCount == 0)
+if (input.jump && grounded && currentJumpCD <= 0)
 {
 	//phy_speed_y =-jumpSpeed;
-	jumpCount++;
-	//show_debug_message("Jump #"+string(jumpCount));
+	currentJumpCD = jumpCD;
 	physics_apply_impulse(x,y,0,-jumpImpulse);
 }
+currentJumpCD = clamp(currentJumpCD-1,0,jumpCD);
 
 phy_rotation = 0;
 
